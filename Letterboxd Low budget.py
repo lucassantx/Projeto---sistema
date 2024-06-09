@@ -1,9 +1,10 @@
 class Filme:
 
-    def __init__(self, usuario, nome, nota):
+    def __init__(self, usuario, nome, nota, review):
         self.usuario = usuario
         self.nome = nome
         self.nota = nota
+        self.review = review
 
     @staticmethod
     def msg1():
@@ -23,7 +24,8 @@ class Filme:
         print("5. Buscar Filme")
         print("6. Exibir Estatísticas")
         print("7. Salvar Lista de Filmes")
-        print("8. Sair")
+        print("8. Modificar Review")
+        print("9. Sair")
         return int(input("Escolha uma opção: "))
 
     @staticmethod
@@ -32,7 +34,8 @@ class Filme:
         nota = int(input("Digite a nota para o filme (1 a 10): "))
         while nota < 1 or nota > 10:
             nota = int(input("Nota inválida. Digite uma nota de 1 a 10: "))
-        filmes.append(Filme(usuario, nome, nota))
+        review = input("Digite a review do filme: ")
+        filmes.append(Filme(usuario, nome, nota, review))
         print("Filme cadastrado.")
 
     @staticmethod
@@ -43,7 +46,7 @@ class Filme:
         else:
             for i, filme in enumerate(filmes, start=1):
                 print(
-                    f"{i}. Usuário: {filme.usuario}, Filme: {filme.nome}, Nota: {filme.nota}"
+                    f"{i}. Usuário: {filme.usuario}, Filme: {filme.nome}, Nota: {filme.nota}, Review: {filme.review}"
                 )
 
     @staticmethod
@@ -70,13 +73,24 @@ class Filme:
             print("Índice inválido.")
 
     @staticmethod
+    def atualizar_review(filmes):
+        indice = int(
+            input("Digite o índice do filme para atualizar a review: "))
+        if 1 <= indice <= len(filmes):
+            nova_review = input("Digite a nova review para o filme: ")
+            filmes[indice - 1].review = nova_review
+            print("Review atualizada com sucesso!")
+        else:
+            print("Índice inválido.")
+
+    @staticmethod
     def buscar_filme(filmes):
         nome = input("Digite o nome do filme para buscar: ")
         encontrado = False
         for filme in filmes:
             if filme.nome.lower() == nome.lower():
                 print(
-                    f"Usuário: {filme.usuario}, Filme: {filme.nome}, Nota: {filme.nota}"
+                    f"Usuário: {filme.usuario}, Filme: {filme.nome}, Nota: {filme.nota}, Review: {filme.review}"
                 )
                 encontrado = True
         if not encontrado:
@@ -102,7 +116,7 @@ class Filme:
         with open("filmes.txt", "w") as arquivo:
             for filme in filmes:
                 arquivo.write(
-                    f"Usuário: {filme.usuario}, Filme: {filme.nome}, Nota: {filme.nota}\n"
+                    f"Usuário: {filme.usuario}, Filme: {filme.nome}, Nota: {filme.nota}, Review: {filme.review}\n"
                 )
         print("Lista de filmes salva com sucesso em 'filmes.txt'.")
 
@@ -128,14 +142,15 @@ class Filme:
                 5: lambda: Filme.buscar_filme(filmes),
                 6: lambda: Filme.exibir_estatisticas(filmes),
                 7: lambda: Filme.salvar_lista(filmes),
-                8: lambda: Filme.encerrar_sessao()
+                8: lambda: Filme.atualizar_review(filmes),
+                9: lambda: Filme.encerrar_sessao()
             }
 
             funcao_escolhida = menu_opcoes.get(
-                opcao, lambda: print("Digite uma opção válida (1-8)."))
+                opcao, lambda: print("Digite uma opção válida (1-9)."))
             funcao_escolhida()
 
-            if opcao == 8:
+            if opcao == 9:
                 executando = False
 
             if executando:
