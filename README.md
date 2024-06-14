@@ -5,4 +5,4 @@ Esse sistema foi criado com o objetivo de armazenar listas de filmes criadas por
 
 Inicialmente programado em C++, mas adaptado para Python.
 
-(Fundamentos de Progamação - Ciência da computação - 1º Período).
+(Fundamentos de Programação - Ciência da computação - 1º Período).
